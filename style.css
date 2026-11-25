@@ -1,5 +1,5 @@
 :root {
-  /* 动态滚动状态变量（由 script.js 平滑驱动） */
+  /* 动态滚动状态变量 */
   --scroll-p: 0;
   --corrupt: 0;
   --dread: 0;
@@ -23,12 +23,12 @@
   --accent-brand: #295643;
   --accent-warm: #d48c54;
 
-  /* 克苏鲁深海与星蚀暗金高维配色 */
-  --abyss-obsidian: #04060c;
-  --abyss-indigo: #1b2238;
-  --astral-gold: #cbb07a;
-  --eldritch-violet: #818cf8;
-  --eldritch-cyan: #67e8f9;
+  /* 潮湿深海、冷灰盐霜与黯淡古金（阴郁克苏鲁恐怖氛围，告别科幻霓虹） */
+  --abyss-obsidian: #03050a;
+  --abyss-deep: #0b111c;
+  --astral-gold: #c6ae82;
+  --pale-mist: #9cb0c2;
+  --cold-slate: #6e8398;
 
   --border-soft: rgba(27, 34, 30, 0.08);
   --shadow-card: 0 18px 45px rgba(25, 35, 29, 0.06);
@@ -46,9 +46,11 @@
   padding: 0;
 }
 
+/* 使用 overflow-x: clip 而非 hidden，确保 iOS Safari 与微信浏览器中 position: sticky 100% 正常工作 */
 html {
   scroll-behavior: smooth;
   background-color: #faf8f4;
+  overflow-x: clip;
 }
 
 body {
@@ -56,19 +58,25 @@ body {
   background-color: var(--bg-page);
   color: var(--text-main);
   line-height: 1.68;
-  overflow-x: hidden;
+  overflow-x: clip;
   transition: background-color 0.35s ease, color 0.35s ease;
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+main {
+  overflow-x: clip;
 }
 
 /* =========================================================
-   全局深渊环境视觉覆盖层（无血浆感，强调深海幽闭、星蚀光晕与微粒感）
+   全局环境视觉层：深海压迫暗角、老旧胶片噪点与水底呼吸脉动
    ========================================================= */
 #fx-canvas {
   position: fixed;
   inset: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   pointer-events: none;
   z-index: 80;
   opacity: 0;
@@ -80,12 +88,12 @@ body {
   inset: 0;
   pointer-events: none;
   z-index: 75;
-  opacity: calc(var(--corrupt) * 0.88);
+  opacity: calc(var(--corrupt) * 0.92);
   background: radial-gradient(
     circle at 50% 50%,
-    transparent calc(70% - var(--dread) * 34%),
-    rgba(6, 10, 20, 0.48) calc(88% - var(--dread) * 20%),
-    rgba(2, 4, 10, 0.94) 100%
+    transparent calc(68% - var(--dread) * 34%),
+    rgba(5, 9, 16, 0.54) calc(86% - var(--dread) * 20%),
+    rgba(2, 4, 8, 0.96) 100%
   );
 }
 
@@ -94,12 +102,12 @@ body {
   inset: 0;
   pointer-events: none;
   z-index: 76;
-  opacity: calc(var(--dread) * 0.24);
+  opacity: calc(var(--dread) * 0.2);
   background: repeating-linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0) 0px,
     rgba(0, 0, 0, 0) 3px,
-    rgba(8, 14, 28, 0.32) 4px
+    rgba(6, 10, 18, 0.34) 4px
   );
 }
 
@@ -111,20 +119,20 @@ body {
   opacity: 0;
   background: radial-gradient(
     circle at 50% 50%,
-    transparent 45%,
-    rgba(99, 102, 241, 0.16) 80%,
-    rgba(203, 176, 122, 0.18) 100%
+    transparent 42%,
+    rgba(30, 48, 72, 0.22) 78%,
+    rgba(198, 174, 130, 0.14) 100%
   );
-  transition: opacity 0.8s ease;
+  transition: opacity 0.85s ease;
 }
 
-/* 深潜观测仪上下遮幅 */
+/* 电影上下遮幅与夜间录音状态栏 */
 .cinema-bar {
   position: fixed;
   left: 0;
   width: 100%;
   height: var(--cinema-bar-h);
-  background: #020307;
+  background: #020306;
   z-index: 88;
   pointer-events: none;
   overflow: hidden;
@@ -133,32 +141,32 @@ body {
 
 .cinema-bar-top {
   top: 0;
-  border-bottom: 1px solid rgba(203, 176, 122, 0.2);
+  border-bottom: 1px solid rgba(198, 174, 130, 0.16);
   display: flex;
   align-items: center;
-  padding: 0 28px;
+  padding: env(safe-area-inset-top) 24px 0;
 }
 
 .cinema-bar-bottom {
   bottom: 0;
-  border-top: 1px solid rgba(203, 176, 122, 0.2);
+  border-top: 1px solid rgba(198, 174, 130, 0.16);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 24px;
+  padding: 4px 20px env(safe-area-inset-bottom);
 }
 
 .cam-hud {
   width: 100%;
-  max-width: 1240px;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 18px;
   font-family: var(--font-mono);
   font-size: 11.5px;
-  letter-spacing: 0.1em;
-  color: rgba(214, 222, 238, 0.72);
+  letter-spacing: 0.08em;
+  color: rgba(206, 214, 224, 0.72);
   opacity: calc((var(--dread) - 0.3) * 2.2);
 }
 
@@ -166,31 +174,34 @@ body {
   width: 7px;
   height: 7px;
   border-radius: 50%;
+  flex-shrink: 0;
   background: var(--astral-gold);
-  box-shadow: 0 0 10px rgba(203, 176, 122, 0.85);
+  box-shadow: 0 0 10px rgba(198, 174, 130, 0.8);
   animation: slowPulse 2.8s ease-in-out infinite;
 }
 
-#hud-geometry {
+#hud-depth {
   margin-left: auto;
   color: var(--astral-gold);
+  white-space: nowrap;
 }
 
 .cinema-subtitle {
   font-family: var(--font-serif);
   font-size: 14.5px;
-  letter-spacing: 0.14em;
-  color: rgba(226, 220, 205, 0.88);
+  line-height: 1.45;
+  letter-spacing: 0.1em;
+  color: rgba(226, 220, 206, 0.9);
   text-align: center;
 }
 
 @keyframes slowPulse {
-  0%, 100% { opacity: 0.95; transform: scale(1); }
-  50% { opacity: 0.3; transform: scale(0.85); }
+  0%, 100% { opacity: 0.92; transform: scale(1); }
+  50% { opacity: 0.28; transform: scale(0.85); }
 }
 
 /* =========================================================
-   顶部导航栏（从温暖极简演变为星蚀黑环与暗金铭文）
+   顶部导航栏
    ========================================================= */
 .site-header {
   position: sticky;
@@ -198,56 +209,65 @@ body {
   z-index: 85;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  background: rgba(250, 248, 244, 0.85);
+  background: rgba(250, 248, 244, 0.88);
   border-bottom: 1px solid var(--border-soft);
+  padding-top: env(safe-area-inset-top);
   transition: background 0.4s ease, border-color 0.4s ease, transform 0.45s ease;
 }
 
 body[data-stage="3"] .site-header {
-  background: rgba(216, 224, 230, 0.86);
-  border-bottom-color: rgba(30, 45, 62, 0.14);
+  background: rgba(214, 221, 226, 0.88);
+  border-bottom-color: rgba(28, 40, 50, 0.14);
 }
 
 body[data-stage="4"] .site-header,
 body.post-abyss .site-header {
-  background: rgba(5, 8, 16, 0.88);
-  border-bottom-color: rgba(203, 176, 122, 0.25);
-  color: #e2e6f0;
+  background: rgba(5, 8, 14, 0.9);
+  border-bottom-color: rgba(198, 174, 130, 0.22);
+  color: #e2e6ee;
 }
 
 body[data-stage="5"] .site-header,
 body[data-stage="6"] .site-header {
-  transform: translateY(-105%);
+  transform: translateY(-108%);
 }
 
 .nav-container {
-  max-width: 1200px;
+  max-width: 1180px;
   margin: 0 auto;
-  height: 70px;
+  height: 68px;
   padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 16px;
 }
 
 .brand-logo {
   display: flex;
   align-items: center;
-  gap: 11px;
+  gap: 10px;
   text-decoration: none;
   color: inherit;
   font-weight: 600;
-  font-size: 17px;
+  font-size: 16.5px;
   letter-spacing: 0.02em;
+  min-width: 0;
+}
+
+.brand-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .logo-orb {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #fffaf0, #e6b981 65%, #c7884b 100%);
-  box-shadow: 0 0 16px rgba(212, 140, 84, 0.45);
+  box-shadow: 0 0 14px rgba(212, 140, 84, 0.45);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -255,18 +275,18 @@ body[data-stage="6"] .site-header {
 }
 
 .logo-eclipse-core {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: #020308;
+  background: #020307;
   opacity: calc(var(--corrupt) * 1.15);
   transition: opacity 0.4s ease;
 }
 
 body[data-stage="4"] .logo-orb,
 body.post-abyss .logo-orb {
-  background: radial-gradient(circle, #ffffff 54%, #cbb07a 68%, rgba(129, 140, 248, 0.4) 100%);
-  box-shadow: 0 0 18px rgba(203, 176, 122, 0.65), 0 0 30px rgba(129, 140, 248, 0.35);
+  background: radial-gradient(circle, #f7f1e3 54%, #c6ae82 70%, rgba(110, 131, 152, 0.4) 100%);
+  box-shadow: 0 0 16px rgba(198, 174, 130, 0.55);
 }
 
 body.post-abyss .logo-eclipse-core {
@@ -278,22 +298,22 @@ body.post-abyss .logo-eclipse-core {
   font-weight: 500;
   padding: 2px 8px;
   border-radius: 999px;
+  white-space: nowrap;
   background: rgba(41, 86, 67, 0.09);
   color: var(--accent-brand);
-  transition: all 0.3s ease;
 }
 
 body[data-stage="4"] .brand-tag,
 body.post-abyss .brand-tag {
-  background: rgba(203, 176, 122, 0.14);
+  background: rgba(198, 174, 130, 0.14);
   color: var(--astral-gold);
-  border: 1px solid rgba(203, 176, 122, 0.3);
+  border: 1px solid rgba(198, 174, 130, 0.3);
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 28px;
 }
 
 .nav-links a {
@@ -301,6 +321,7 @@ body.post-abyss .brand-tag {
   color: inherit;
   opacity: 0.78;
   font-size: 14px;
+  white-space: nowrap;
   transition: opacity 0.2s ease;
 }
 
@@ -311,20 +332,22 @@ body.post-abyss .brand-tag {
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
 .btn-sound {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
+  gap: 7px;
+  padding: 7px 13px;
   border-radius: 999px;
-  border: 1px solid rgba(41, 86, 67, 0.2);
-  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(41, 86, 67, 0.22);
+  background: rgba(255, 255, 255, 0.72);
   color: inherit;
   font-family: inherit;
   font-size: 13px;
+  white-space: nowrap;
   cursor: pointer;
   transition: all 0.25s ease;
 }
@@ -336,8 +359,8 @@ body.post-abyss .brand-tag {
 
 body[data-stage="4"] .btn-sound,
 body.post-abyss .btn-sound {
-  background: rgba(12, 17, 30, 0.85);
-  border-color: rgba(203, 176, 122, 0.38);
+  background: rgba(12, 18, 28, 0.88);
+  border-color: rgba(198, 174, 130, 0.38);
   color: #e6dcc8;
 }
 
@@ -346,6 +369,7 @@ body.post-abyss .btn-sound {
   height: 7px;
   border-radius: 50%;
   background: #9ca3af;
+  flex-shrink: 0;
   transition: all 0.25s ease;
 }
 
@@ -357,7 +381,7 @@ body.post-abyss .btn-sound {
 body[data-stage="4"] .btn-sound.active .sound-dot,
 body.post-abyss .btn-sound.active .sound-dot {
   background: var(--astral-gold);
-  box-shadow: 0 0 10px rgba(203, 176, 122, 0.9);
+  box-shadow: 0 0 10px rgba(198, 174, 130, 0.9);
 }
 
 .scroll-progress-track {
@@ -369,19 +393,19 @@ body.post-abyss .btn-sound.active .sound-dot {
 .scroll-progress-bar {
   height: 100%;
   width: calc(var(--scroll-p) * 100%);
-  background: linear-gradient(90deg, #295643 0%, #527082 38%, #6366f1 72%, #cbb07a 100%);
+  background: linear-gradient(90deg, #295643 0%, #526a78 42%, #3a4f66 74%, #c6ae82 100%);
   transition: width 0.08s linear;
 }
 
-/* 通用容器与按钮 */
+/* 通用布局与按钮 */
 .container {
-  max-width: 1180px;
+  max-width: 1160px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
 .section {
-  padding: 108px 0;
+  padding: 102px 0;
   position: relative;
 }
 
@@ -396,6 +420,7 @@ body.post-abyss .btn-sound.active .sound-dot {
   border: none;
   border-radius: 999px;
   font-weight: 500;
+  white-space: nowrap;
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.35s ease;
 }
@@ -407,27 +432,27 @@ body.post-abyss .btn-sound.active .sound-dot {
 
 body[data-stage="4"] .btn-primary,
 body.post-abyss .btn-primary {
-  background: linear-gradient(135deg, #1e2942, #312e59);
-  border: 1px solid rgba(203, 176, 122, 0.45);
+  background: linear-gradient(135deg, #1b283b, #283548);
+  border: 1px solid rgba(198, 174, 130, 0.45);
   color: #f3ead8;
-  box-shadow: 0 0 26px rgba(99, 102, 241, 0.28);
+  box-shadow: 0 0 24px rgba(12, 20, 34, 0.55);
 }
 
 .btn-sm {
-  padding: 8px 18px;
-  font-size: 13.5px;
+  padding: 8px 16px;
+  font-size: 13px;
 }
 
 .btn-lg {
-  padding: 15px 28px;
-  font-size: 15.5px;
+  padding: 14px 26px;
+  font-size: 15px;
 }
 
 .btn-secondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
+  gap: 8px;
   background: #ffffff;
   color: var(--text-main);
   border: 1px solid rgba(27, 34, 30, 0.14);
@@ -444,38 +469,38 @@ body.post-abyss .btn-primary {
 }
 
 body.post-abyss .btn-secondary {
-  background: rgba(11, 15, 28, 0.88);
+  background: rgba(11, 16, 26, 0.88);
   color: var(--astral-gold);
-  border-color: rgba(203, 176, 122, 0.38);
+  border-color: rgba(198, 174, 130, 0.38);
 }
 
-/* 浮动重置按钮 & 回滚低语横幅 */
+/* 浮动重置按钮 & 回滚提示 */
 .floating-controls {
   position: fixed;
-  left: 22px;
-  bottom: 22px;
+  left: 20px;
+  bottom: 20px;
   z-index: 95;
   display: flex;
   gap: 10px;
 }
 
 .reset-sanity-btn {
-  padding: 10px 18px;
+  padding: 10px 16px;
   border-radius: 999px;
-  border: 1px solid rgba(203, 176, 122, 0.48);
-  background: rgba(6, 9, 18, 0.9);
+  border: 1px solid rgba(198, 174, 130, 0.5);
+  background: rgba(6, 9, 16, 0.92);
   color: #ebe2ce;
   font-family: var(--font-sans);
   font-size: 13px;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   cursor: pointer;
   backdrop-filter: blur(12px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65);
   transition: all 0.25s ease;
 }
 
 .reset-sanity-btn:hover {
-  background: rgba(30, 41, 68, 0.95);
+  background: rgba(24, 35, 52, 0.96);
   border-color: #e6cfa0;
   transform: translateY(-2px);
 }
@@ -486,18 +511,21 @@ body.post-abyss .btn-secondary {
 
 .retreat-toast {
   position: fixed;
-  top: 84px;
+  top: calc(78px + env(safe-area-inset-top));
   left: 50%;
-  transform: translateX(-50%) translateY(-16px);
+  transform: translateX(-50%) translateY(-14px);
   z-index: 92;
-  padding: 9px 22px;
+  max-width: calc(100vw - 28px);
+  padding: 9px 18px;
   border-radius: 999px;
-  background: rgba(6, 9, 19, 0.92);
-  border: 1px solid rgba(203, 176, 122, 0.42);
+  background: rgba(6, 10, 18, 0.94);
+  border: 1px solid rgba(198, 174, 130, 0.42);
   color: #e8dec8;
   font-family: var(--font-serif);
-  font-size: 13.5px;
-  letter-spacing: 0.08em;
+  font-size: 13px;
+  line-height: 1.45;
+  text-align: center;
+  letter-spacing: 0.05em;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.45s ease, transform 0.45s ease;
@@ -509,71 +537,68 @@ body.post-abyss .btn-secondary {
 }
 
 /* =========================================================
-   ACT I: 阳光商业营销首屏（及深渊回滚后的非欧几何星蚀异变态）
+   ACT I: 阳光商业营销首屏 & 深渊回滚异变态
    ========================================================= */
 .hero-section {
-  padding-top: 68px;
-  padding-bottom: 92px;
+  padding-top: 64px;
+  padding-bottom: 88px;
   background: radial-gradient(ellipse at 75% 20%, rgba(238, 211, 175, 0.26), transparent 58%),
               linear-gradient(180deg, #faf8f4 0%, #f5f2eb 100%);
   transition: background 0.8s ease, color 0.6s ease;
 }
 
 body.post-abyss .hero-section {
-  background: radial-gradient(ellipse at 72% 28%, rgba(88, 96, 185, 0.18), transparent 62%),
-              linear-gradient(180deg, #04060d 0%, #090d1a 100%);
-  color: #e6e9f2;
+  background: radial-gradient(ellipse at 70% 28%, rgba(44, 62, 92, 0.24), transparent 62%),
+              linear-gradient(180deg, #04060b 0%, #090e18 100%);
+  color: #e6e9f0;
 }
 
 .hero-grid {
   display: grid;
-  grid-template-columns: 1.02fr 1.08fr;
-  gap: 54px;
+  grid-template-columns: 1fr 1.08fr;
+  gap: 48px;
   align-items: center;
-}
-
-/* 回滚异变后：整座首屏产生微妙的“非欧角度倾斜”，仿佛房间不再是直角 */
-body.post-abyss .hero-copy {
-  transform: perspective(900px) rotateY(1.1deg) skewY(-0.45deg);
 }
 
 .pill-badge {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  padding: 6px 15px;
+  gap: 8px;
+  padding: 6px 14px;
   border-radius: 999px;
   background: rgba(41, 86, 67, 0.08);
   color: var(--accent-brand);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 500;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
+  max-width: 100%;
 }
 
 body.post-abyss .pill-badge {
-  background: rgba(203, 176, 122, 0.1);
+  background: rgba(198, 174, 130, 0.1);
   color: var(--astral-gold);
-  border: 1px solid rgba(203, 176, 122, 0.3);
+  border: 1px solid rgba(198, 174, 130, 0.3);
 }
 
 .badge-dot {
   width: 7px;
   height: 7px;
+  flex-shrink: 0;
   border-radius: 50%;
   background: #2f7a5b;
 }
 
 body.post-abyss .badge-dot {
-  background: #020308;
-  box-shadow: 0 0 0 2px var(--astral-gold), 0 0 10px rgba(129, 140, 248, 0.8);
+  background: #020307;
+  box-shadow: 0 0 0 2px var(--astral-gold);
 }
 
 .hero-title {
-  font-size: clamp(2.35rem, 4vw, 3.45rem);
-  line-height: 1.18;
+  font-size: clamp(2.1rem, 4vw, 3.35rem);
+  line-height: 1.2;
   font-weight: 700;
   letter-spacing: -0.02em;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   color: #161d19;
 }
 
@@ -582,25 +607,24 @@ body.post-abyss .hero-title {
   font-weight: 600;
   letter-spacing: 0.03em;
   color: #f4efe4;
-  text-shadow: 0 0 28px rgba(129, 140, 248, 0.32);
 }
 
 .hero-subtitle {
-  font-size: 17px;
+  font-size: 16.5px;
   color: var(--text-secondary);
-  margin-bottom: 34px;
+  margin-bottom: 30px;
   max-width: 520px;
 }
 
 body.post-abyss .hero-subtitle {
-  color: #b4bdd0;
+  color: #b4becd;
 }
 
 .hero-cta-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 22px;
 }
 
 .play-icon {
@@ -613,28 +637,27 @@ body.post-abyss .play-icon {
 }
 
 .hero-guarantee {
-  font-size: 13px;
+  font-size: 12.8px;
   color: var(--text-muted);
+  line-height: 1.6;
 }
 
 body.post-abyss .hero-guarantee {
-  color: rgba(203, 176, 122, 0.82);
-  letter-spacing: 0.05em;
+  color: rgba(198, 174, 130, 0.84);
 }
 
 .hero-image-card {
   position: relative;
-  border-radius: 26px;
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 28px 65px rgba(32, 38, 34, 0.13);
+  box-shadow: 0 26px 60px rgba(32, 38, 34, 0.13);
   aspect-ratio: 16 / 9;
   background: #e9e4da;
-  transition: transform 0.8s ease, box-shadow 0.8s ease;
+  transition: box-shadow 0.8s ease;
 }
 
 body.post-abyss .hero-image-card {
-  transform: perspective(1000px) rotateY(-1.8deg) rotateX(0.9deg);
-  box-shadow: 0 30px 90px rgba(30, 38, 88, 0.45), 0 0 0 1px rgba(203, 176, 122, 0.32);
+  box-shadow: 0 28px 80px rgba(10, 18, 34, 0.65), 0 0 0 1px rgba(198, 174, 130, 0.3);
 }
 
 .hero-img {
@@ -643,7 +666,7 @@ body.post-abyss .hero-image-card {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.9s ease, transform 6s ease;
+  transition: opacity 0.9s ease;
 }
 
 .hero-img.corrupted-twin {
@@ -658,83 +681,87 @@ body.post-abyss #hero-img-corrupted {
   opacity: 1;
 }
 
+/* 桌面端：让两个小卡片直接悬浮在图片角落；手机端改为图片下方双列排布，不遮挡照片！ */
+.hero-widgets-container {
+  display: contents;
+}
+
 .floating-widget {
   position: absolute;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  background: rgba(255, 255, 255, 0.86);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: 16px;
-  padding: 12px 16px;
-  box-shadow: 0 12px 30px rgba(20, 26, 22, 0.1);
+  padding: 11px 15px;
+  box-shadow: 0 12px 28px rgba(20, 26, 22, 0.1);
   z-index: 3;
   animation: gentleFloat 5.5s ease-in-out infinite;
 }
 
 body.post-abyss .floating-widget {
-  background: rgba(6, 9, 19, 0.82);
-  border-color: rgba(203, 176, 122, 0.35);
+  background: rgba(6, 10, 18, 0.86);
+  border-color: rgba(198, 174, 130, 0.34);
   color: #e8e2d4;
 }
 
 .widget-top-right {
-  top: 18px;
-  right: 18px;
+  top: 16px;
+  right: 16px;
 }
 
 .widget-bottom-left {
-  bottom: 18px;
-  left: 18px;
+  bottom: 16px;
+  left: 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 11px;
   animation-delay: -2.6s;
 }
 
 .widget-icon-circle {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
   border-radius: 50%;
   background: rgba(41, 86, 67, 0.12);
   color: var(--accent-brand);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 body.post-abyss .widget-icon-circle {
-  background: rgba(203, 176, 122, 0.16);
+  background: rgba(198, 174, 130, 0.16);
   color: var(--astral-gold);
 }
 
 .widget-label {
-  font-size: 11.5px;
+  font-size: 11px;
   color: var(--text-muted);
 }
 
 body.post-abyss .widget-label {
-  color: #9ba8c2;
+  color: #9ba7ba;
 }
 
 .widget-value {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   color: var(--text-main);
 }
 
 body.post-abyss .widget-value {
   color: #f3ead8;
-  font-family: var(--font-mono);
-  font-size: 13px;
 }
 
 .wave-bars {
   display: flex;
   align-items: flex-end;
   gap: 3px;
-  height: 14px;
-  margin-top: 6px;
+  height: 12px;
+  margin-top: 5px;
 }
 
 .wave-bars span {
@@ -749,15 +776,15 @@ body.post-abyss .wave-bars span {
   animation-duration: 3.2s;
 }
 
-.wave-bars span:nth-child(1) { height: 6px; animation-delay: 0s; }
-.wave-bars span:nth-child(2) { height: 12px; animation-delay: 0.2s; }
-.wave-bars span:nth-child(3) { height: 9px; animation-delay: 0.4s; }
-.wave-bars span:nth-child(4) { height: 14px; animation-delay: 0.15s; }
-.wave-bars span:nth-child(5) { height: 7px; animation-delay: 0.35s; }
+.wave-bars span:nth-child(1) { height: 5px; animation-delay: 0s; }
+.wave-bars span:nth-child(2) { height: 11px; animation-delay: 0.2s; }
+.wave-bars span:nth-child(3) { height: 8px; animation-delay: 0.4s; }
+.wave-bars span:nth-child(4) { height: 12px; animation-delay: 0.15s; }
+.wave-bars span:nth-child(5) { height: 6px; animation-delay: 0.35s; }
 
 @keyframes gentleFloat {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-5px); }
+  50% { transform: translateY(-4px); }
 }
 
 @keyframes waveAnim {
@@ -767,69 +794,60 @@ body.post-abyss .wave-bars span {
 
 /* 媒体背书与数据栏 */
 .trust-strip {
-  margin-top: 64px;
-  padding-top: 34px;
+  margin-top: 58px;
+  padding-top: 30px;
   border-top: 1px solid var(--border-soft);
   text-align: center;
 }
 
 body.post-abyss .trust-strip {
-  border-top-color: rgba(203, 176, 122, 0.18);
+  border-top-color: rgba(198, 174, 130, 0.18);
 }
 
 .trust-caption {
   font-size: 12.5px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   color: var(--text-muted);
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .trust-logos {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 42px;
+  gap: 18px 36px;
   font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.12em;
+  font-size: 13.5px;
+  letter-spacing: 0.1em;
   color: rgba(27, 34, 30, 0.38);
 }
 
 body.post-abyss .trust-logos {
-  color: rgba(165, 180, 212, 0.32);
+  color: rgba(165, 180, 200, 0.34);
 }
 
 .metrics-grid {
-  margin-top: 48px;
+  margin-top: 44px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 18px;
 }
 
 .metric-card {
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.78);
   border: 1px solid var(--border-soft);
   border-radius: 18px;
-  padding: 24px 20px;
+  padding: 22px 18px;
   text-align: center;
-  transition: transform 0.4s ease;
 }
 
 body.post-abyss .metric-card {
-  background: rgba(10, 14, 28, 0.82);
-  border-color: rgba(203, 176, 122, 0.24);
-}
-
-body.post-abyss .metric-card:nth-child(odd) {
-  transform: skewY(-0.6deg);
-}
-
-body.post-abyss .metric-card:nth-child(even) {
-  transform: skewY(0.6deg);
+  background: rgba(10, 14, 24, 0.84);
+  border-color: rgba(198, 174, 130, 0.24);
 }
 
 .metric-num {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--accent-brand);
   margin-bottom: 4px;
@@ -841,41 +859,41 @@ body.post-abyss .metric-num {
 }
 
 .metric-desc {
-  font-size: 13.5px;
+  font-size: 13px;
   color: var(--text-secondary);
 }
 
 body.post-abyss .metric-desc {
-  color: #aeb8cc;
+  color: #aeb8c6;
 }
 
 /* =========================================================
-   ACT II: 隐晦的空间尺度异常（雾灰青蓝渐变 + 天体几何图符）
+   ACT II: 细思极恐（雾灰冷潮渗透）
    ========================================================= */
 .features-section {
-  background: linear-gradient(180deg, #f5f2eb 0%, #e6eaeb 55%, #d6dfe3 100%);
+  background: linear-gradient(180deg, #f5f2eb 0%, #e7eceb 55%, #d6dfe1 100%);
   color: #1c2426;
 }
 
 body.post-abyss .features-section {
-  background: linear-gradient(180deg, #090d1a 0%, #070b14 100%);
-  color: #dde3f0;
+  background: linear-gradient(180deg, #090e18 0%, #070b12 100%);
+  color: #dde3ee;
 }
 
 .section-header {
-  max-width: 700px;
-  margin: 0 auto 60px;
+  max-width: 680px;
+  margin: 0 auto 54px;
   text-align: center;
 }
 
 .section-eyebrow {
   display: inline-block;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent-brand);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 body.post-abyss .section-eyebrow {
@@ -883,63 +901,63 @@ body.post-abyss .section-eyebrow {
 }
 
 .section-title {
-  font-size: clamp(1.85rem, 3vw, 2.55rem);
-  line-height: 1.26;
-  margin-bottom: 16px;
+  font-size: clamp(1.65rem, 3vw, 2.45rem);
+  line-height: 1.28;
+  margin-bottom: 14px;
 }
 
 .section-lead {
-  font-size: 16px;
+  font-size: 15.5px;
   color: var(--text-secondary);
 }
 
 body.post-abyss .section-lead {
-  color: #9aa6be;
+  color: #9aa7b8;
 }
 
 .features-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 26px;
+  gap: 24px;
 }
 
 .feature-card {
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(30, 44, 52, 0.1);
-  border-radius: 22px;
-  padding: 34px 28px;
+  border-radius: 20px;
+  padding: 30px 24px;
   box-shadow: var(--shadow-card);
   display: flex;
   flex-direction: column;
-  transition: transform 0.4s ease, border-color 0.4s ease;
+  transition: transform 0.35s ease, border-color 0.35s ease;
 }
 
 .feature-card:hover {
-  transform: perspective(800px) rotateX(1.2deg) rotateY(-1.2deg) translateY(-4px);
-  border-color: rgba(79, 70, 229, 0.32);
+  transform: translateY(-4px);
+  border-color: rgba(58, 79, 102, 0.35);
 }
 
 body.post-abyss .feature-card {
-  background: rgba(11, 16, 30, 0.88);
-  border-color: rgba(203, 176, 122, 0.24);
+  background: rgba(11, 16, 26, 0.88);
+  border-color: rgba(198, 174, 130, 0.24);
 }
 
 .feature-icon-wrap {
-  width: 54px;
-  height: 54px;
-  border-radius: 15px;
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
   background: rgba(41, 86, 67, 0.08);
   color: #264d3c;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   transition: all 0.35s ease;
 }
 
 .feature-card:hover .feature-icon-wrap,
 body.post-abyss .feature-icon-wrap {
-  background: rgba(99, 102, 241, 0.14);
+  background: rgba(198, 174, 130, 0.14);
   color: var(--astral-gold);
 }
 
@@ -948,27 +966,27 @@ body.post-abyss .feature-icon-wrap {
 }
 
 .feature-title {
-  font-size: 19px;
-  margin-bottom: 12px;
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
 .feature-text {
-  font-size: 14.8px;
+  font-size: 14.5px;
   color: #465256;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
   flex: 1;
 }
 
 body.post-abyss .feature-text {
-  color: #b4bfd4;
+  color: #b4bfd0;
 }
 
 .subtle-creep {
-  transition: color 0.4s ease;
+  transition: color 0.35s ease;
 }
 
 .feature-card:hover .subtle-creep {
-  color: #2c3566;
+  color: #26354a;
 }
 
 body.post-abyss .subtle-creep {
@@ -976,26 +994,26 @@ body.post-abyss .subtle-creep {
 }
 
 .feature-meta {
-  padding-top: 16px;
+  padding-top: 14px;
   border-top: 1px dashed rgba(30, 44, 52, 0.14);
 }
 
 .status-pill {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11.5px;
   color: #455861;
 }
 
 body.post-abyss .status-pill {
-  color: var(--eldritch-cyan);
+  color: var(--pale-mist);
 }
 
 .routine-banner {
-  margin-top: 44px;
-  background: rgba(246, 248, 249, 0.9);
+  margin-top: 38px;
+  background: rgba(246, 248, 249, 0.92);
   border: 1px solid rgba(30, 44, 52, 0.11);
   border-radius: 20px;
-  padding: 28px 34px;
+  padding: 26px 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1003,8 +1021,8 @@ body.post-abyss .status-pill {
 }
 
 body.post-abyss .routine-banner {
-  background: rgba(11, 16, 30, 0.9);
-  border-color: rgba(203, 176, 122, 0.25);
+  background: rgba(11, 16, 26, 0.9);
+  border-color: rgba(198, 174, 130, 0.24);
 }
 
 .routine-step {
@@ -1014,7 +1032,7 @@ body.post-abyss .routine-banner {
 .routine-time {
   display: inline-block;
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
   padding: 2px 9px;
   border-radius: 6px;
@@ -1024,18 +1042,18 @@ body.post-abyss .routine-banner {
 }
 
 .uncanny-step .routine-time {
-  background: rgba(79, 70, 229, 0.14);
-  color: #4338ca;
+  background: rgba(42, 58, 82, 0.16);
+  color: #26364d;
 }
 
 body.post-abyss .uncanny-step .routine-time {
-  background: rgba(203, 176, 122, 0.18);
+  background: rgba(198, 174, 130, 0.18);
   color: var(--astral-gold);
 }
 
 .routine-step strong {
   display: block;
-  font-size: 16px;
+  font-size: 15.5px;
   margin-bottom: 4px;
 }
 
@@ -1045,42 +1063,43 @@ body.post-abyss .uncanny-step .routine-time {
 }
 
 body.post-abyss .routine-step p {
-  color: #a6b2c9;
+  color: #a6b2c2;
 }
 
 .routine-divider {
   color: var(--text-muted);
-  font-size: 20px;
+  font-size: 18px;
 }
 
 /* =========================================================
-   ACT III: 抽象声学干涉底片（无写实人脸！实时坍缩条纹与高维多面体）
+   ACT III: 显影异常的旧档底片 & 深夜用户来信
    ========================================================= */
 .science-section {
-  background: linear-gradient(180deg, #d6dfe3 0%, #b5c3cc 52%, #8c9ca8 100%);
+  background: linear-gradient(180deg, #d6dfe1 0%, #b5c1c9 52%, #8796a2 100%);
   color: #141c22;
 }
 
 body.post-abyss .science-section {
-  background: #060913;
-  color: #dfe5f2;
+  background: #060911;
+  color: #dfe5f0;
 }
 
 .science-layout {
   display: grid;
-  grid-template-columns: 1.12fr 0.95fr;
-  gap: 48px;
+  grid-template-columns: 1.1fr 0.95fr;
+  gap: 44px;
   align-items: center;
 }
 
 .photo-frame {
   position: relative;
-  border-radius: 18px;
+  border-radius: 16px;
   overflow: hidden;
-  background: #070b14;
-  border: 1px solid rgba(203, 176, 122, 0.28);
-  box-shadow: 0 26px 60px rgba(7, 12, 24, 0.34);
+  background: #060910;
+  border: 1px solid rgba(198, 174, 130, 0.28);
+  box-shadow: 0 24px 56px rgba(7, 12, 22, 0.34);
   cursor: crosshair;
+  touch-action: pan-y;
 }
 
 .lab-anomaly-canvas {
@@ -1092,22 +1111,26 @@ body.post-abyss .science-section {
 
 .plate-hud-top {
   position: absolute;
-  top: 12px;
-  left: 16px;
+  top: 10px;
+  left: 14px;
+  right: 14px;
   font-family: var(--font-mono);
   font-size: 10.5px;
-  letter-spacing: 0.1em;
-  color: rgba(203, 176, 122, 0.72);
+  letter-spacing: 0.06em;
+  color: rgba(198, 174, 130, 0.78);
   pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .anomaly-box {
   position: absolute;
-  left: 44%;
-  top: 26%;
-  width: 12%;
+  left: 43%;
+  top: 27%;
+  width: 14%;
   height: 36%;
-  border: 1px dashed rgba(203, 176, 122, 0.38);
+  border: 1px dashed rgba(198, 174, 130, 0.4);
   pointer-events: none;
   transition: all 0.4s ease;
 }
@@ -1115,37 +1138,37 @@ body.post-abyss .science-section {
 .photo-frame:hover .anomaly-box {
   border-style: solid;
   border-color: var(--astral-gold);
-  box-shadow: 0 0 24px rgba(203, 176, 122, 0.35), inset 0 0 14px rgba(129, 140, 248, 0.22);
+  box-shadow: 0 0 22px rgba(198, 174, 130, 0.32);
 }
 
 .anomaly-tag {
   position: absolute;
-  bottom: calc(100% + 6px);
+  bottom: calc(100% + 5px);
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
-  background: rgba(5, 8, 17, 0.92);
+  background: rgba(5, 8, 15, 0.92);
   color: var(--astral-gold);
   font-family: var(--font-mono);
   font-size: 10px;
   padding: 2px 7px;
   border-radius: 4px;
-  border: 1px solid rgba(203, 176, 122, 0.42);
+  border: 1px solid rgba(198, 174, 130, 0.4);
 }
 
 .photo-caption {
   margin-top: 14px;
   font-size: 12.8px;
-  color: #26333d;
-  line-height: 1.6;
+  color: #24303a;
+  line-height: 1.62;
 }
 
 body.post-abyss .photo-caption {
-  color: #9aa7bf;
+  color: #98a5b8;
 }
 
 .caption-warning {
-  color: #1e294b;
+  color: #1c293c;
   font-weight: 500;
 }
 
@@ -1154,52 +1177,53 @@ body.post-abyss .caption-warning {
 }
 
 .science-paragraph {
-  font-size: 15.5px;
-  margin-bottom: 22px;
+  font-size: 15px;
+  margin-bottom: 20px;
   color: #1e2a33;
 }
 
 body.post-abyss .science-paragraph {
-  color: #BCC6DA;
+  color: #bcc6d6;
 }
 
 .scientist-quote {
-  background: rgba(12, 20, 32, 0.07);
-  border-left: 3px solid #374167;
-  padding: 18px 20px;
+  background: rgba(12, 20, 32, 0.08);
+  border-left: 3px solid #35465c;
+  padding: 16px 18px;
   border-radius: 0 12px 12px 0;
   font-family: var(--font-serif);
-  font-size: 15px;
-  margin-bottom: 24px;
+  font-size: 14.8px;
+  margin-bottom: 22px;
 }
 
 body.post-abyss .scientist-quote {
-  background: rgba(203, 176, 122, 0.07);
+  background: rgba(198, 174, 130, 0.07);
   border-left-color: var(--astral-gold);
 }
 
 .scientist-quote footer {
   margin-top: 10px;
   font-family: var(--font-sans);
-  font-size: 12.5px;
+  font-size: 12px;
   opacity: 0.78;
 }
 
 .compliance-checklist {
   display: grid;
-  gap: 10px;
-  font-size: 14px;
+  gap: 9px;
+  font-size: 13.8px;
 }
 
 .check-item {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: flex-start;
+  gap: 9px;
 }
 
 .check-item span {
-  color: #313d66;
+  color: #2d3e54;
   font-size: 12px;
+  margin-top: 2px;
 }
 
 body.post-abyss .check-item span {
@@ -1207,7 +1231,7 @@ body.post-abyss .check-item span {
 }
 
 .creepy-highlight {
-  color: #212b52;
+  color: #1f2e44;
   font-weight: 600;
 }
 
@@ -1215,10 +1239,10 @@ body.post-abyss .creepy-highlight {
   color: var(--astral-gold);
 }
 
-/* 用户睡眠回传记录：沉入深海黑曜石色 */
+/* 用户评价区 */
 .reviews-section {
-  background: linear-gradient(180deg, #8c9ca8 0%, #3d4b5c 36%, #141b29 74%, #070a12 100%);
-  color: #e6ebf5;
+  background: linear-gradient(180deg, #8796a2 0%, #3a4756 36%, #131a24 74%, #070a10 100%);
+  color: #e6ebf2;
 }
 
 .reviews-section .section-eyebrow {
@@ -1230,51 +1254,45 @@ body.post-abyss .creepy-highlight {
 }
 
 .reviews-section .section-lead {
-  color: #b5c0d4;
+  color: #b5c0cf;
 }
 
 .reviews-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 22px;
 }
 
 .review-card {
-  background: rgba(246, 248, 250, 0.93);
+  background: rgba(246, 248, 250, 0.94);
   color: #1b222c;
   border-radius: 18px;
-  padding: 26px;
+  padding: 24px;
   border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.26);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.35s ease;
-}
-
-.review-card:nth-child(2) {
-  transform: perspective(700px) rotateY(-1deg);
 }
 
 .review-distorted {
   background: rgba(226, 232, 238, 0.92);
-  transform: perspective(700px) rotateX(1.2deg);
 }
 
 .review-hijacked,
 .review-cult,
 .review-live-target {
-  background: rgba(10, 14, 26, 0.92);
-  color: #dce3f2;
-  border: 1px solid rgba(203, 176, 122, 0.32);
-  box-shadow: 0 22px 54px rgba(0, 0, 0, 0.62);
+  background: rgba(10, 14, 22, 0.92);
+  color: #dce3ee;
+  border: 1px solid rgba(198, 174, 130, 0.3);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.62);
 }
 
 .review-stars {
   color: #c28e42;
-  font-size: 14px;
+  font-size: 13.5px;
   letter-spacing: 2px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .review-hijacked .review-stars,
@@ -1286,22 +1304,22 @@ body.post-abyss .creepy-highlight {
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0;
-  color: var(--eldritch-violet);
-  margin-left: 6px;
+  color: var(--pale-mist);
+  margin-left: 4px;
 }
 
 .review-body {
-  font-size: 14.5px;
+  font-size: 14.2px;
   line-height: 1.72;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
 .frantic-strike {
   display: block;
   text-decoration: line-through;
-  color: rgba(186, 198, 224, 0.42);
+  color: rgba(186, 198, 218, 0.44);
   font-size: 13px;
-  line-height: 1.48;
+  line-height: 1.5;
   margin-bottom: 10px;
 }
 
@@ -1313,12 +1331,12 @@ body.post-abyss .creepy-highlight {
 
 .mantra-text {
   font-family: var(--font-serif);
-  letter-spacing: 0.06em;
-  color: #cfd8ec;
+  letter-spacing: 0.05em;
+  color: #cfd8e6;
 }
 
 .live-blink {
-  color: var(--eldritch-cyan);
+  color: var(--astral-gold);
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.04em;
@@ -1326,15 +1344,15 @@ body.post-abyss .creepy-highlight {
 }
 
 .review-live-target {
-  border-color: rgba(103, 232, 249, 0.45);
-  box-shadow: 0 0 36px rgba(99, 102, 241, 0.18);
+  border-color: rgba(198, 174, 130, 0.5);
+  box-shadow: 0 0 32px rgba(24, 38, 58, 0.36);
 }
 
 .review-author {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 12.8px;
+  font-size: 12.5px;
 }
 
 .review-author strong {
@@ -1347,8 +1365,8 @@ body.post-abyss .creepy-highlight {
 }
 
 .avatar-circle {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: #284b52;
   color: #ffffff;
@@ -1361,18 +1379,18 @@ body.post-abyss .creepy-highlight {
 
 .corrupted-avatar,
 .live-avatar {
-  background: rgba(203, 176, 122, 0.14);
-  border: 1px solid rgba(203, 176, 122, 0.45);
+  background: rgba(198, 174, 130, 0.14);
+  border: 1px solid rgba(198, 174, 130, 0.42);
   color: var(--astral-gold);
 }
 
 /* =========================================================
-   ACT IV: 维度置换协议 + 非欧遥测终端
+   ACT IV: 无法取消的预约 & 断电仍在录制的床头日志
    ========================================================= */
 .pricing-section {
-  background: linear-gradient(180deg, #070a12 0%, #04060d 65%, #020308 100%);
-  color: #e4e9f4;
-  border-top: 1px solid rgba(203, 176, 122, 0.16);
+  background: linear-gradient(180deg, #070a10 0%, #04060b 65%, #020307 100%);
+  color: #e4e9f2;
+  border-top: 1px solid rgba(198, 174, 130, 0.15);
 }
 
 .pricing-section .section-eyebrow {
@@ -1380,108 +1398,107 @@ body.post-abyss .creepy-highlight {
 }
 
 .pricing-section .section-lead {
-  color: #9aa7c0;
+  color: #9aa7ba;
 }
 
 .glitch-heading {
   font-family: var(--font-serif);
   letter-spacing: 0.04em;
   color: #f4efe4;
-  text-shadow: -1.5px 0 rgba(129, 140, 248, 0.45), 1.5px 0 rgba(203, 176, 122, 0.45);
 }
 
 .pricing-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 26px;
+  gap: 24px;
   align-items: stretch;
 }
 
 .price-card {
-  background: rgba(9, 13, 25, 0.92);
-  border: 1px solid rgba(148, 163, 198, 0.2);
+  background: rgba(9, 13, 21, 0.92);
+  border: 1px solid rgba(148, 163, 184, 0.18);
   border-radius: 20px;
-  padding: 34px 28px;
+  padding: 30px 24px;
   display: flex;
   flex-direction: column;
   position: relative;
 }
 
 .price-card-featured {
-  background: linear-gradient(180deg, rgba(22, 27, 52, 0.95) 0%, rgba(8, 11, 22, 0.98) 100%);
-  border: 1.5px solid rgba(203, 176, 122, 0.65);
-  box-shadow: 0 0 55px rgba(99, 102, 241, 0.18);
-  transform: scale(1.03);
+  background: linear-gradient(180deg, rgba(18, 25, 38, 0.96) 0%, rgba(8, 11, 18, 0.98) 100%);
+  border: 1.5px solid rgba(198, 174, 130, 0.62);
+  box-shadow: 0 0 50px rgba(24, 38, 58, 0.35);
+  transform: scale(1.02);
 }
 
 .featured-ribbon {
   position: absolute;
   top: -12px;
-  left: 28px;
-  background: linear-gradient(90deg, #9f8451, #cbb07a);
-  color: #080b14;
-  font-size: 11.5px;
+  left: 24px;
+  background: linear-gradient(90deg, #9f8451, #c6ae82);
+  color: #080b12;
+  font-size: 11px;
   font-weight: 700;
-  padding: 3px 13px;
+  padding: 3px 12px;
   border-radius: 999px;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
 }
 
 .price-card-broken {
-  transform: perspective(800px) rotateY(-2deg) skewY(0.8deg);
   border-style: dashed;
-  border-color: rgba(129, 140, 248, 0.32);
+  border-color: rgba(156, 176, 194, 0.3);
 }
 
 .price-tier {
   font-size: 15px;
   font-weight: 600;
   color: var(--astral-gold);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .strike-faint {
   text-decoration: line-through;
-  color: #7d89a3;
+  color: #7d899a;
 }
 
 .price-amount {
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 700;
   margin-bottom: 10px;
   font-family: var(--font-serif);
 }
 
 .price-amount span {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 400;
-  color: #a6b2ca;
+  color: #a6b2c2;
 }
 
 .price-note {
   font-size: 13.5px;
-  color: #9ba8c2;
-  margin-bottom: 24px;
+  color: #9ba8ba;
+  margin-bottom: 22px;
 }
 
 .price-features {
   list-style: none;
   display: grid;
-  gap: 11px;
-  font-size: 14px;
-  color: #d3dcf0;
-  margin-bottom: 30px;
+  gap: 10px;
+  font-size: 13.8px;
+  color: #d3dce8;
+  margin-bottom: 26px;
   flex: 1;
 }
 
 .btn-outline-corrupt {
   width: 100%;
-  padding: 13px 18px;
+  padding: 12px 16px;
   border-radius: 12px;
-  border: 1px solid rgba(203, 176, 122, 0.3);
-  background: rgba(203, 176, 122, 0.08);
+  border: 1px solid rgba(198, 174, 130, 0.28);
+  background: rgba(198, 174, 130, 0.08);
   color: var(--astral-gold);
   font-family: inherit;
+  font-size: 14px;
   cursor: not-allowed;
 }
 
@@ -1489,87 +1506,98 @@ body.post-abyss .creepy-highlight {
   display: block;
   text-align: center;
   width: 100%;
-  padding: 14px 20px;
+  padding: 13px 18px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #273059, #433878);
-  border: 1px solid rgba(203, 176, 122, 0.55);
+  background: linear-gradient(135deg, #213047, #33435c);
+  border: 1px solid rgba(198, 174, 130, 0.55);
   color: #f6efe0;
   text-decoration: none;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  box-shadow: 0 8px 28px rgba(67, 56, 120, 0.45);
+  font-size: 14.5px;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .btn-abyss:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 36px rgba(129, 140, 248, 0.45);
+  box-shadow: 0 10px 30px rgba(34, 52, 78, 0.55);
 }
 
 .btn-escape {
   width: 100%;
-  padding: 13px 18px;
+  padding: 12px 16px;
   border-radius: 12px;
-  border: 1px solid rgba(148, 163, 198, 0.4);
-  background: rgba(15, 21, 38, 0.95);
-  color: #cbd5e8;
+  border: 1px solid rgba(148, 163, 184, 0.38);
+  background: rgba(15, 21, 32, 0.95);
+  color: #cbd5e4;
   font-family: inherit;
   font-size: 14px;
   cursor: pointer;
   position: relative;
-  transition: transform 0.24s cubic-bezier(0.2, 0.9, 0.3, 1.15), opacity 0.25s ease;
+  transition: transform 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.15);
 }
 
-/* 非欧空间遥测仪终端 */
+/* 夜间床头记录终端 */
 .telemetry-terminal {
-  margin-top: 64px;
-  background: #03050b;
-  border: 1px solid rgba(203, 176, 122, 0.3);
+  margin-top: 56px;
+  background: #030509;
+  border: 1px solid rgba(198, 174, 130, 0.28);
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 28px 70px rgba(0, 0, 0, 0.85);
+  box-shadow: 0 26px 65px rgba(0, 0, 0, 0.85);
   font-family: var(--font-mono);
 }
 
 .terminal-topbar {
-  background: #090d1b;
-  padding: 11px 18px;
-  border-bottom: 1px solid rgba(203, 176, 122, 0.2);
+  background: #090e17;
+  padding: 11px 16px;
+  border-bottom: 1px solid rgba(198, 174, 130, 0.18);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   font-size: 12px;
-  color: #bdc8de;
+  color: #bdc8d8;
 }
 
 .terminal-dots {
   display: flex;
   gap: 6px;
+  flex-shrink: 0;
 }
 
 .terminal-dots span {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: rgba(203, 176, 122, 0.45);
+  background: rgba(198, 174, 130, 0.45);
+}
+
+.terminal-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .terminal-status {
   color: var(--astral-gold);
+  white-space: nowrap;
   animation: slowPulse 2.4s infinite;
 }
 
 .terminal-body {
-  padding: 20px 22px;
+  padding: 18px 20px;
   display: grid;
   gap: 9px;
-  font-size: 13px;
-  line-height: 1.58;
-  color: #8fa0bc;
+  font-size: 12.8px;
+  line-height: 1.6;
+  color: #8fa0b5;
+  word-break: break-word;
 }
 
 .log-danger {
-  color: #c7d2fe;
+  color: #cad5e4;
 }
 
 .log-critical {
@@ -1578,12 +1606,12 @@ body.post-abyss .creepy-highlight {
 }
 
 /* =========================================================
-   ACT V: 非欧几里得沉没回廊（色相重构为深海靛青 + 空间网格弯曲画布）
+   ACT V: 积水沉没的长廊（移动端 100dvh + 触控光照 + 错落防重叠字迹）
    ========================================================= */
 .corridor-track {
-  height: 320vh;
+  height: 300vh;
   position: relative;
-  background: #020308;
+  background: #020306;
 }
 
 .corridor-sticky-viewport {
@@ -1591,9 +1619,11 @@ body.post-abyss .creepy-highlight {
   top: 0;
   width: 100%;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
-  background: #020308;
+  background: #020306;
   cursor: none;
+  touch-action: pan-y;
 }
 
 .corridor-camera {
@@ -1606,12 +1636,11 @@ body.post-abyss .creepy-highlight {
   will-change: transform;
 }
 
-/* 将走廊原图色相转为克苏鲁深海青靛与星蚀紫，消除廉价血色感 */
 .corridor-bg-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: hue-rotate(195deg) saturate(0.72) brightness(0.64) contrast(1.24);
+  filter: hue-rotate(192deg) saturate(0.55) brightness(0.62) contrast(1.24);
 }
 
 .corridor-warp-canvas {
@@ -1631,8 +1660,8 @@ body.post-abyss .creepy-highlight {
   height: 34%;
   background: radial-gradient(
     ellipse at 65% 50%,
-    rgba(230, 212, 170, 0.82) 0%,
-    rgba(129, 140, 248, 0.48) 42%,
+    rgba(226, 212, 178, 0.78) 0%,
+    rgba(110, 134, 168, 0.42) 45%,
     transparent 76%
   );
   mix-blend-mode: screen;
@@ -1640,21 +1669,20 @@ body.post-abyss .creepy-highlight {
   pointer-events: none;
 }
 
-/* 石壁夹层中的古老几何公理与勘探残卷（仅声呐透镜扫过时显现） */
 .wall-scratches-layer {
   position: absolute;
   inset: 0;
   pointer-events: none;
   -webkit-mask-image: radial-gradient(
-    circle 235px at var(--flash-x) var(--flash-y),
+    circle 230px at var(--flash-x) var(--flash-y),
     rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0.62) 55%,
+    rgba(0, 0, 0, 0.6) 56%,
     rgba(0, 0, 0, 0) 100%
   );
   mask-image: radial-gradient(
-    circle 235px at var(--flash-x) var(--flash-y),
+    circle 230px at var(--flash-x) var(--flash-y),
     rgba(0, 0, 0, 1) 0%,
-    rgba(0, 0, 0, 0.62) 55%,
+    rgba(0, 0, 0, 0.6) 56%,
     rgba(0, 0, 0, 0) 100%
   );
 }
@@ -1662,56 +1690,57 @@ body.post-abyss .creepy-highlight {
 .wall-graffiti {
   position: absolute;
   font-family: var(--font-serif);
-  color: rgba(226, 206, 160, 0.9);
+  color: rgba(226, 212, 180, 0.92);
   font-weight: 500;
-  text-shadow: 0 0 16px rgba(129, 140, 248, 0.65), 0 2px 10px rgba(0, 0, 0, 0.95);
-  letter-spacing: 0.14em;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.98);
+  letter-spacing: 0.1em;
   user-select: none;
 }
 
-.wg-1 { left: 7%; top: 27%; font-size: 20px; transform: rotate(-4deg) skewY(-8deg); }
-.wg-2 { right: 8%; top: 25%; font-size: 19px; transform: rotate(4deg) skewY(8deg); }
-.wg-3 { left: 11%; top: 64%; font-size: 18px; transform: rotate(-3deg) skewY(-6deg); }
-.wg-4 { right: 9%; top: 60%; font-size: 17px; font-family: var(--font-mono); color: rgba(165, 243, 252, 0.85); transform: rotate(4deg) skewY(7deg); }
-.wg-5 { left: 22%; top: 43%; font-size: 17px; color: rgba(199, 210, 254, 0.9); }
-.wg-6 { right: 18%; top: 41%; font-size: 16px; }
+.wg-1 { left: 8%; top: 25%; font-size: 19px; transform: rotate(-4deg) skewY(-7deg); }
+.wg-2 { right: 8%; top: 24%; font-size: 18px; transform: rotate(4deg) skewY(7deg); }
+.wg-3 { left: 10%; top: 64%; font-size: 18px; transform: rotate(-3deg) skewY(-6deg); }
+.wg-4 { right: 10%; top: 62%; font-size: 17px; transform: rotate(4deg) skewY(6deg); }
+.wg-5 { left: 22%; top: 43%; font-size: 17px; color: rgba(212, 222, 236, 0.88); }
+.wg-6 { right: 16%; top: 42%; font-size: 16px; }
 
 .flashlight-darkness {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: radial-gradient(
-    circle 295px at var(--flash-x) var(--flash-y),
-    rgba(199, 210, 254, 0.06) 0%,
-    rgba(203, 176, 122, 0.04) 28%,
-    rgba(6, 10, 20, 0.64) 56%,
-    rgba(2, 4, 10, 0.95) 85%,
-    rgba(1, 2, 6, 0.99) 100%
+    circle 290px at var(--flash-x) var(--flash-y),
+    rgba(210, 220, 232, 0.05) 0%,
+    rgba(198, 174, 130, 0.04) 28%,
+    rgba(5, 9, 16, 0.65) 56%,
+    rgba(2, 4, 8, 0.95) 85%,
+    rgba(1, 2, 5, 0.99) 100%
   );
 }
 
 .corridor-hint {
   position: absolute;
-  top: 84px;
+  top: calc(74px + env(safe-area-inset-top));
   left: 50%;
   transform: translateX(-50%);
-  padding: 6px 18px;
+  padding: 6px 16px;
   border-radius: 999px;
-  background: rgba(5, 8, 18, 0.76);
-  border: 1px solid rgba(203, 176, 122, 0.3);
-  color: rgba(226, 218, 200, 0.78);
+  background: rgba(5, 8, 15, 0.78);
+  border: 1px solid rgba(198, 174, 130, 0.3);
+  color: rgba(226, 218, 200, 0.8);
   font-size: 12px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
   pointer-events: none;
 }
 
 /* =========================================================
-   ACT VI: 不可名状的克苏鲁黑日终局（360vh 静谧宇宙级深渊，零跳脸！）
+   ACT VI: 不可名状的黑海与黑日终局（零跳脸 · 100dvh 完美适配）
    ========================================================= */
 .abyss-track {
-  height: 360vh;
+  height: 330vh;
   position: relative;
-  background: #010206;
+  background: #010205;
 }
 
 .abyss-sticky-viewport {
@@ -1719,11 +1748,13 @@ body.post-abyss .creepy-highlight {
   top: 0;
   width: 100%;
   height: 100vh;
+  height: 100dvh;
   overflow: hidden;
-  background: #010206;
+  background: #010205;
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: pan-y;
 }
 
 #eldritch-canvas {
@@ -1739,15 +1770,14 @@ body.post-abyss .creepy-highlight {
   inset: 0;
   pointer-events: none;
   z-index: 4;
-  background: radial-gradient(circle at 50% 42%, transparent 32%, rgba(1, 2, 7, 0.72) 100%);
+  background: radial-gradient(circle at 50% 38%, transparent 32%, rgba(1, 2, 6, 0.72) 100%);
 }
 
-/* 穿越裂隙过渡文案 */
 .abyss-threshold-text {
   position: absolute;
   z-index: 6;
   text-align: center;
-  padding: 0 24px;
+  padding: 0 22px;
   opacity: var(--threshold-opacity);
   transform: translateY(calc((1 - var(--threshold-opacity)) * 12px));
   pointer-events: none;
@@ -1757,31 +1787,30 @@ body.post-abyss .creepy-highlight {
 .threshold-coord {
   font-family: var(--font-mono);
   font-size: 13px;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.24em;
   color: var(--astral-gold);
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .threshold-line {
   font-family: var(--font-serif);
-  font-size: clamp(1.1rem, 2vw, 1.45rem);
-  letter-spacing: 0.14em;
-  color: rgba(226, 232, 245, 0.86);
+  font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+  letter-spacing: 0.12em;
+  color: rgba(226, 232, 242, 0.88);
 }
 
-/* 终局静谧碑文（随滚动缓缓浮现，无任何刺眼惊吓） */
 .climax-overlay-text {
   position: absolute;
   left: 50%;
-  bottom: 9.5vh;
+  bottom: calc(74px + env(safe-area-inset-bottom));
   transform: translateX(-50%) translateY(calc((1 - var(--climax-reveal)) * 18px));
-  width: min(92%, 800px);
+  width: min(92%, 780px);
   text-align: center;
   z-index: 10;
-  padding: 24px 32px;
+  padding: 22px 28px;
   border-radius: 18px;
-  background: linear-gradient(180deg, rgba(4, 7, 16, 0.56), rgba(2, 4, 10, 0.86));
-  border: 1px solid rgba(203, 176, 122, 0.28);
+  background: linear-gradient(180deg, rgba(4, 7, 14, 0.62), rgba(2, 4, 9, 0.88));
+  border: 1px solid rgba(198, 174, 130, 0.28);
   backdrop-filter: blur(10px);
   opacity: var(--climax-reveal);
   pointer-events: none;
@@ -1792,25 +1821,25 @@ body.post-abyss .creepy-highlight {
   display: inline-block;
   font-family: var(--font-mono);
   font-size: 11.5px;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   color: var(--astral-gold);
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .climax-headline {
   font-family: var(--font-serif);
   font-weight: 500;
-  font-size: clamp(1.35rem, 2.4vw, 1.95rem);
+  font-size: clamp(1.25rem, 2.4vw, 1.9rem);
+  line-height: 1.42;
   color: #f5efe2;
-  letter-spacing: 0.08em;
-  margin-bottom: 12px;
-  text-shadow: 0 0 24px rgba(203, 176, 122, 0.28);
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
 }
 
 .climax-whisper {
   font-size: 14px;
-  color: #b7c2d8;
-  line-height: 1.8;
+  color: #b7c2d2;
+  line-height: 1.75;
 }
 
 .whisper-up {
@@ -1818,21 +1847,23 @@ body.post-abyss .creepy-highlight {
   margin-top: 6px;
   font-size: 12.8px;
   color: var(--astral-gold);
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
-/* 文字短暂坍缩为星体几何符号态 */
+/* 潜意识文字微闪烁态 */
 .char-glitching {
-  color: #4338ca !important;
+  color: #25364d !important;
   font-family: var(--font-serif);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
 }
 
 body.post-abyss .char-glitching {
   color: var(--astral-gold) !important;
 }
 
-/* 响应式适配 */
+/* =========================================================
+   平板与移动端深度响应式重构（彻底消除挤压、重叠、截断与错位）
+   ========================================================= */
 @media (max-width: 980px) {
   .hero-grid,
   .science-layout,
@@ -1840,6 +1871,10 @@ body.post-abyss .char-glitching {
   .reviews-grid,
   .pricing-grid {
     grid-template-columns: 1fr;
+  }
+
+  .hero-grid {
+    gap: 32px;
   }
 
   .metrics-grid {
@@ -1862,5 +1897,333 @@ body.post-abyss .char-glitching {
 
   .corridor-sticky-viewport {
     cursor: default;
+  }
+}
+
+@media (max-width: 768px) {
+  /* 1. 手机顶部栏严格单行防挤压 */
+  .nav-container {
+    height: 58px;
+    padding: 0 16px;
+  }
+
+  .brand-logo {
+    font-size: 15px;
+    gap: 8px;
+  }
+
+  .brand-tag,
+  #nav-cta-btn {
+    display: none;
+  }
+
+  .btn-sound {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  /* 2. 舒适紧凑的移动端留白与字号 */
+  .container {
+    padding: 0 18px;
+  }
+
+  .section {
+    padding: 64px 0;
+  }
+
+  .hero-section {
+    padding-top: 28px;
+    padding-bottom: 56px;
+  }
+
+  .pill-badge {
+    font-size: 11.5px;
+    padding: 5px 12px;
+    margin-bottom: 16px;
+  }
+
+  .hero-title {
+    font-size: 1.9rem;
+    line-height: 1.26;
+    margin-bottom: 14px;
+  }
+
+  .hero-subtitle {
+    font-size: 14.8px;
+    line-height: 1.65;
+    margin-bottom: 22px;
+  }
+
+  .hero-cta-group {
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .hero-cta-group .btn-lg {
+    width: 100%;
+    padding: 13px 20px;
+    font-size: 14.5px;
+  }
+
+  .hero-guarantee {
+    font-size: 12px;
+  }
+
+  /* 3. 核心修复：手机端把悬浮信息卡片移到卧室图片下方成干净双列，彻底解决照片被遮挡的问题！ */
+  .hero-image-card {
+    aspect-ratio: auto;
+    border-radius: 18px;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  body.post-abyss .hero-image-card {
+    box-shadow: none;
+  }
+
+  .hero-img {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: 18px;
+    box-shadow: 0 18px 40px rgba(25, 32, 28, 0.14);
+  }
+
+  .hero-img.corrupted-twin {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: auto;
+    height: auto;
+  }
+
+  .hero-widgets-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .floating-widget {
+    position: static;
+    animation: none;
+    padding: 11px 12px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 8px 20px rgba(20, 26, 22, 0.06);
+  }
+
+  .widget-bottom-left {
+    gap: 8px;
+  }
+
+  .widget-icon-circle {
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
+  }
+
+  .widget-label {
+    font-size: 10.5px;
+  }
+
+  .widget-value {
+    font-size: 12.2px;
+  }
+
+  /* 4. 背书栏、指标栏、卡片、终端手机排版 */
+  .trust-strip {
+    margin-top: 38px;
+    padding-top: 24px;
+  }
+
+  .trust-logos {
+    gap: 12px 18px;
+    font-size: 11.5px;
+  }
+
+  .metrics-grid {
+    margin-top: 28px;
+    gap: 12px;
+  }
+
+  .metric-card {
+    padding: 16px 12px;
+    border-radius: 14px;
+  }
+
+  .metric-num {
+    font-size: 20px;
+  }
+
+  .metric-desc {
+    font-size: 11.8px;
+  }
+
+  .section-header {
+    margin-bottom: 34px;
+  }
+
+  .section-title {
+    font-size: 1.55rem;
+  }
+
+  .section-lead {
+    font-size: 14.2px;
+  }
+
+  .feature-card,
+  .review-card,
+  .price-card {
+    padding: 22px 18px;
+    border-radius: 16px;
+  }
+
+  .routine-banner {
+    padding: 20px 18px;
+    gap: 16px;
+  }
+
+  .science-layout {
+    gap: 28px;
+  }
+
+  .plate-hud-top {
+    font-size: 9px;
+    top: 8px;
+    left: 10px;
+    right: 10px;
+  }
+
+  .anomaly-tag {
+    font-size: 9px;
+    padding: 1px 5px;
+  }
+
+  .telemetry-terminal {
+    margin-top: 36px;
+  }
+
+  .terminal-topbar {
+    flex-wrap: wrap;
+    padding: 10px 14px;
+    font-size: 11px;
+    gap: 6px 10px;
+  }
+
+  .terminal-title {
+    flex-basis: 100%;
+    order: 3;
+    white-space: normal;
+  }
+
+  .terminal-body {
+    padding: 14px;
+    font-size: 11.8px;
+    gap: 8px;
+  }
+
+  /* 5. 电影上下黑边与字幕手机防裁切 */
+  .cinema-bar-top {
+    padding: env(safe-area-inset-top) 14px 0;
+  }
+
+  .cinema-bar-bottom {
+    padding: 6px 14px calc(6px + env(safe-area-inset-bottom));
+  }
+
+  .cam-hud {
+    font-size: 10px;
+    gap: 10px;
+  }
+
+  .cinema-subtitle {
+    font-size: 12.2px;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+  }
+
+  /* 6. 走廊墙面字迹手机竖屏错落排布（绝不重叠！） */
+  .corridor-hint {
+    top: calc(66px + env(safe-area-inset-top));
+    width: calc(100% - 28px);
+    text-align: center;
+    white-space: normal;
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+
+  .wall-scratches-layer {
+    -webkit-mask-image: radial-gradient(
+      circle 175px at var(--flash-x) var(--flash-y),
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.58) 58%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    mask-image: radial-gradient(
+      circle 175px at var(--flash-x) var(--flash-y),
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.58) 58%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  .wall-graffiti {
+    font-size: 14px;
+    max-width: 78%;
+    transform: none;
+    letter-spacing: 0.06em;
+  }
+
+  .wg-1 { left: 7%; top: 22%; }
+  .wg-2 { right: 7%; top: 34%; text-align: right; }
+  .wg-3 { left: 8%; top: 47%; }
+  .wg-4 { right: 8%; top: 59%; text-align: right; }
+  .wg-5 { left: 10%; top: 70%; }
+  .wg-6 { right: 8%; top: 79%; text-align: right; }
+
+  /* 7. 终局碑文与浮动重置按钮彻底避让，永不重叠 */
+  .climax-overlay-text {
+    bottom: calc(76px + env(safe-area-inset-bottom));
+    width: calc(100% - 24px);
+    padding: 15px 16px;
+    border-radius: 14px;
+  }
+
+  .climax-rec-badge {
+    font-size: 10.5px;
+    margin-bottom: 6px;
+  }
+
+  .climax-headline {
+    font-size: 1.12rem;
+    line-height: 1.42;
+    margin-bottom: 8px;
+  }
+
+  .climax-whisper {
+    font-size: 12.5px;
+    line-height: 1.62;
+  }
+
+  .whisper-up {
+    font-size: 11.5px;
+  }
+
+  .floating-controls {
+    left: auto;
+    bottom: auto;
+    right: 12px;
+    top: calc(66px + env(safe-area-inset-top));
+  }
+
+  .reset-sanity-btn {
+    padding: 7px 12px;
+    font-size: 11.5px;
   }
 }

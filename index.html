@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>澄境 LUMINA™ | 下一代空间情绪节律与深度安眠系统</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-stage="1">
+  <!-- 全局环境视觉层：深海暗角、胶片微粒、空间曲率波纹 -->
+  <canvas id="fx-canvas" aria-hidden="true"></canvas>
+  <div id="vignette-layer" aria-hidden="true"></div>
+  <div id="scanline-layer" aria-hidden="true"></div>
+  <div id="abyss-pulse-layer" aria-hidden="true"></div>
+
+  <!-- 深潜观测上下遮幅（深层滚动时缓缓收拢，呈现深空/深海观测仪质感） -->
+  <div class="cinema-bar cinema-bar-top" aria-hidden="true">
+    <div class="cam-hud">
+      <span class="rec-dot"></span>
+      <span id="hud-cam-id">SONAR_ARRAY_07 · 空间曲率监测中</span>
+      <span id="hud-clock">22:00:00</span>
+      <span id="hud-geometry">∑∠ 180.00°</span>
+    </div>
+  </div>
+  <div class="cinema-bar cinema-bar-bottom" aria-hidden="true">
+    <div id="cinema-subtitle" class="cinema-subtitle"></div>
+  </div>
+
+  <!-- 顶部导航栏：随滚动从温润商业设计悄然演变为非欧观测铭文 -->
+  <header id="site-header" class="site-header">
+    <div class="nav-container">
+      <a href="#hero" class="brand-logo" id="brand-logo">
+        <span class="logo-orb" id="logo-orb">
+          <span class="logo-eclipse-core"></span>
+        </span>
+        <span class="brand-text" data-normal="澄境 LUMINA" data-abyss="澄境 · 观测面已反转">澄境 LUMINA</span>
+        <span class="brand-tag" id="brand-tag" data-normal="S1 睡眠伴侣" data-abyss="非欧谐振体">S1 睡眠伴侣</span>
+      </a>
+
+      <nav class="nav-links" aria-label="主导航">
+        <a href="#features" id="nav-link-1" data-normal="无感科技" data-abyss="尺度失真">无感科技</a>
+        <a href="#science" id="nav-link-2" data-normal="科研团队" data-abyss="焦点坍缩">科研团队</a>
+        <a href="#reviews" id="nav-link-3" data-normal="用户口碑" data-abyss="梦境同化">用户口碑</a>
+        <a href="#pricing" id="nav-link-4" data-normal="订阅方案" data-abyss="不可逆下潜">订阅方案</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="audio-toggle-btn" class="btn-sound" type="button" aria-pressed="false" title="开启 432Hz 助眠环境声景">
+          <span class="sound-dot" id="sound-dot"></span>
+          <span id="audio-btn-label">试听助眠声景</span>
+        </button>
+        <a href="#pricing" id="nav-cta-btn" class="btn-primary btn-sm" data-normal="免费试用 30 天" data-abyss="三维锚点已丢失">免费试用 30 天</a>
+      </div>
+    </div>
+    <div class="scroll-progress-track">
+      <div id="scroll-progress-bar" class="scroll-progress-bar"></div>
+    </div>
+  </header>
+
+  <!-- 浮动控制胶囊：跌入不可名状之境后可重置回初始正常商业状态 -->
+  <div class="floating-controls" id="floating-controls">
+    <button id="reset-sanity-btn" class="reset-sanity-btn hidden" type="button">
+      ☉ 重建欧氏坐标 · 回到最初的页面
+    </button>
+  </div>
+
+  <!-- 向上回滚时的隐晦感知提示 -->
+  <div id="retreat-toast" class="retreat-toast" aria-live="polite"></div>
+
+  <main id="main-content">
+    <!-- =========================================================
+         ACT I (0% - 16%): 阳光、纯净、令人安心的北欧风高端睡眠科技官网
+         ========================================================= -->
+    <section id="hero" class="section hero-section" data-act="1">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="pill-badge" id="hero-badge">
+            <span class="badge-dot"></span>
+            <span data-normal="2026 年度 iF 金奖设计 · 已守护 142,804 个安静夜晚" data-abyss="第 142,805 次意识下潜已记录 · 房间直角正在缓慢弯曲">
+              2026 年度 iF 金奖设计 · 已守护 142,804 个安静夜晚
+            </span>
+          </div>
+
+          <h1 class="hero-title" id="hero-title"
+              data-normal="让每一个夜晚，<br>都温柔地记住你的呼吸。"
+              data-abyss="你已经滑回最上面了。<br>可为什么天空还在水底下面？">
+            让每一个夜晚，<br>都温柔地记住你的呼吸。
+          </h1>
+
+          <p class="hero-subtitle" id="hero-subtitle"
+             data-normal="告别手环束缚与入睡焦虑。澄境 LUMINA S1 采用医疗级毫米波隔空传感与 432Hz 自适应声光节律，在毫不知情间抚平每一次夜间惊醒。"
+             data-abyss="一旦见过事物在更高维度里的拓扑切面，人类的视觉就再也无法把房间还原成直线了。窗外不是街道，那片海一直都在那里。">
+            告别手环束缚与入睡焦虑。澄境 LUMINA S1 采用医疗级毫米波隔空传感与 432Hz 自适应声光节律，在毫不知情间抚平每一次夜间惊醒。
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="#features" class="btn-primary btn-lg" id="hero-main-cta"
+               data-normal="探索安心入睡原理 ↓"
+               data-abyss="再次向海床下潜 ↓">
+              探索安心入睡原理 ↓
+            </a>
+            <button type="button" id="hero-sound-cta" class="btn-secondary btn-lg">
+              <span class="play-icon">▶</span>
+              <span data-normal="播放 432Hz 阿尔法脑波演示" data-abyss="聆听 -11,090 米处的原始脉动">播放 432Hz 阿尔法脑波演示</span>
+            </button>
+          </div>
+
+          <div class="hero-guarantee" data-normal="✓ 30 天无理由退换 · ✓ 零摄像头隐私承诺 · ✓ 瑞士 SGS 低电磁认证" data-abyss="⟁ 空间曲率已偏移 · ☍ 睡眠即下潜 · ☉ 请勿直视悬空的圆环">
+            ✓ 30 天无理由退换 · ✓ 零摄像头隐私承诺 · ✓ 瑞士 SGS 低电磁认证
+          </div>
+        </div>
+
+        <div class="hero-visual-wrap">
+          <div class="hero-image-card" id="hero-image-card">
+            <img id="hero-img-normal" src="assets/hero_normal.jpg" alt="阳光清晨中宁静舒适的现代卧室与澄境 LUMINA 助眠灯" class="hero-img active" />
+            <img id="hero-img-corrupted" src="assets/hero_cosmic_corrupted.jpg" alt="空无一人却发生空间扭曲的卧室，悬浮圆石散发光环，窗外是无尽黑海与日食黑环" class="hero-img corrupted-twin" />
+
+            <!-- 悬浮 UI 卡片 -->
+            <div class="floating-widget widget-top-right" id="hero-widget-top">
+              <div class="widget-label" data-normal="实时睡眠声场" data-abyss="局部引力折射率">实时睡眠声场</div>
+              <div class="widget-value" id="hero-db-val" data-normal="21.4 dB · 极静" data-abyss="Δn = √-1 · 光线弯曲">21.4 dB · 极静</div>
+              <div class="wave-bars" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+
+            <div class="floating-widget widget-bottom-left" id="hero-widget-bottom">
+              <div class="widget-icon-circle" data-normal="☾" data-abyss="☉">☾</div>
+              <div>
+                <div class="widget-label" data-normal="深度慢波睡眠占比" data-abyss="个体边界溶解度">深度慢波睡眠占比</div>
+                <div class="widget-value" data-normal="98.4% · 身心饱满" data-abyss="99.9% · 汇入母海">98.4% · 身心饱满</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 权威媒体与机构背书栏 -->
+      <div class="container trust-strip">
+        <p class="trust-caption" data-normal="深受全球睡眠医学中心与先锋生活方式媒体信赖" data-abyss="上述观测站均已于第 19 次深海谐振实验后停止使用人类语言提交报告">
+          深受全球睡眠医学中心与先锋生活方式媒体信赖
+        </p>
+        <div class="trust-logos">
+          <span>ZÜRICH SLEEP LAB</span>
+          <span>Wallpaper*</span>
+          <span>36氪年度硬件</span>
+          <span>MIT Media Lab</span>
+          <span>iF DESIGN GOLD</span>
+        </div>
+      </div>
+
+      <!-- 核心亮眼指标 -->
+      <div class="container metrics-grid">
+        <div class="metric-card">
+          <div class="metric-num" data-normal="14.2 分钟" data-abyss="214.8°">14.2 分钟</div>
+          <div class="metric-desc" data-normal="平均入睡时间缩短" data-abyss="当前卧室内三角形内角和">平均入睡时间缩短</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num" data-normal="99.2%" data-abyss="-11,090 m">99.2%</div>
+          <div class="metric-desc" data-normal="连续 30 天使用留存率" data-abyss="窗外那片静默黑海的海床深度">连续 30 天使用留存率</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num" data-normal="0 穿戴" data-abyss="∅ 无五官">0 穿戴</div>
+          <div class="metric-desc" data-normal="无感毫米波隔空监测" data-abyss="长期观测者在底片上的折射形态">无感毫米波隔空监测</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num" data-normal="142,804" data-abyss="同一个梦">142,804</div>
+          <div class="metric-desc" data-normal="正在安睡的城市家庭" data-abyss="八十亿睡眠者每晚真正去往的地方">正在安睡的城市家庭</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ACT II (16% - 34%): 隐晦的尺度异常 · 空间比图纸更大、频率来自深海地壳之下
+         ========================================================= -->
+    <section id="features" class="section features-section" data-act="2">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow" data-normal="无感空间智能 · AMBIENT SENSING" data-abyss="非欧空间测绘 · NON-EUCLIDEAN TOPOLOGY">无感空间智能 · AMBIENT SENSING</span>
+          <h2 class="section-title" data-normal="比你自己，更懂你在夜里每一次翻身" data-abyss="夜晚的房间，从来都不是白天你看到的大小">
+            比你自己，更懂你在夜里每一次翻身
+          </h2>
+          <p class="section-lead">
+            它不需要戴在手腕上，也不需要任何镜头。<span class="uncanny-inline">它只是安静地向四周发射声波，替您确认墙壁今晚是否还停留在原来的位置。</span>
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <!-- 功能卡片 1 -->
+          <article class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg class="eye-svg" viewBox="0 0 48 48" width="40" height="40" aria-hidden="true">
+                <circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="3 3"/>
+                <ellipse cx="24" cy="24" rx="16" ry="9" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                <circle class="tracking-pupil" cx="24" cy="24" r="4.8" fill="currentColor"/>
+              </svg>
+            </div>
+            <h3 class="feature-title">毫米级卧室声学测绘</h3>
+            <p class="feature-text">
+              每秒发射 120 束微功率电磁波，精准构建床体与墙面的三维距离模型。<span class="subtle-creep" data-glitch="多出来的4.7米不要伸手去摸">偶尔在凌晨三点，回波会显示您的卧室内部宽度比建筑图纸多出了 4.7 米——请勿下床丈量多出来的那片虚空，天亮前系统会自动将其重新折叠。</span>
+            </p>
+            <div class="feature-meta">
+              <span class="status-pill">空间冗余容差：+4.72 m（未知纵深）</span>
+            </div>
+          </article>
+
+          <!-- 功能卡片 2 -->
+          <article class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg class="eye-svg" viewBox="0 0 48 48" width="40" height="40" aria-hidden="true">
+                <polygon points="24,6 42,36 6,36" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                <circle cx="24" cy="25" r="9" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                <circle class="tracking-pupil" cx="24" cy="25" r="4.2" fill="currentColor"/>
+              </svg>
+            </div>
+            <h3 class="feature-title">深海原生低频谐振</h3>
+            <p class="feature-text">
+              摒弃生硬的电子合成白噪音，还原最接近母体羊水与远古潮汐的包覆感。<span class="subtle-creep" data-glitch="那不是合成音那是海沟底部的呼吸">该基底频率采集自 1997 年南太平洋海沟下 11,090 米无光带持续至今的规律脉动。若入睡前耳膜出现轻微失重与语言遗忘感，属于正常神经脱锚现象。</span>
+            </p>
+            <div class="feature-meta">
+              <span class="status-pill">原始母波深度：-11,090 m · 振幅仍在缓慢上升</span>
+            </div>
+          </article>
+
+          <!-- 功能卡片 3 -->
+          <article class="feature-card">
+            <div class="feature-icon-wrap">
+              <svg class="eye-svg" viewBox="0 0 48 48" width="40" height="40" aria-hidden="true">
+                <rect x="10" y="10" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" transform="rotate(15 24 24)"/>
+                <rect x="14" y="14" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.4" transform="rotate(-18 24 24)"/>
+                <circle class="tracking-pupil" cx="24" cy="24" r="4.5" fill="currentColor"/>
+              </svg>
+            </div>
+            <h3 class="feature-title">群体慢波相位对齐</h3>
+            <p class="feature-text">
+              自动抚平碎片化多梦阶段，让大脑皮层进入毫无杂念的平坦慢波节律。<span class="subtle-creep" data-glitch="不要在梦里抬头看那颗黑色的太阳">当同一街区超过三百台设备同时亮起时，相近频率的睡眠者会共享同一片灰白色石质海岸。若您在梦中看见水面上悬着不发光的黑色圆环，请保持俯首，切勿尝试上浮。</span>
+            </p>
+            <div class="feature-meta">
+              <span class="status-pill">邻近节点共鸣率：99.98%（已连入同一睡眠面）</span>
+            </div>
+          </article>
+        </div>
+
+        <!-- 昼夜节律时间轴：科学术语逐渐滑向不可名状的几何异变 -->
+        <div class="routine-banner">
+          <div class="routine-step">
+            <span class="routine-time">22:30</span>
+            <strong>暖琥珀伴睡光谱</strong>
+            <p>色温平滑降至 1800K，褪黑素自然分泌。</p>
+          </div>
+          <div class="routine-divider">→</div>
+          <div class="routine-step">
+            <span class="routine-time">01:15</span>
+            <strong>三维边界柔化</strong>
+            <p>弱化墙壁与天花板的直角感知，消除幽闭焦虑。</p>
+          </div>
+          <div class="routine-divider">→</div>
+          <div class="routine-step uncanny-step">
+            <span class="routine-time">03:14</span>
+            <strong>第四象限下潜对齐</strong>
+            <p>灯体脱离桌面悬浮 3 厘米。您的意识已安全抵达海床以下。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ACT III (34% - 54%): 抽象光学坍缩 · 面部被重力透镜抹除的研究员与诡异评价
+         ========================================================= -->
+    <section id="science" class="section science-section" data-act="3">
+      <div class="container">
+        <div class="science-layout">
+          <div class="science-visual" id="team-photo-box">
+            <div class="photo-frame" id="lab-plate-frame">
+              <canvas id="lab-anomaly-canvas" class="lab-anomaly-canvas" width="960" height="580" aria-label="声学干涉扫描图谱：四名研究员轮廓的面部区域坍缩为引力透镜黑环，中央悬浮高维多面体"></canvas>
+              <div class="plate-hud-top">ARCHIVE_PLATE_19 · SLIT-SCAN INTERFEROMETRY · 03:14 UTC</div>
+              <div class="anomaly-box" id="anomaly-box">
+                <span class="anomaly-tag">OBJECT_∅ · 投影维数 4.72</span>
+              </div>
+            </div>
+            <p class="photo-caption" id="team-caption">
+              澄境苏黎世—深海声学联合课题组干涉成像底片（摄于第 19 次母波共振实验后）。<br>
+              <span class="caption-warning">※ 档案说明：并非成像设备故障。自课题组复现万米海沟脉冲后，四名研究员在一切光学与声呐介质中均不再呈现出人类五官，仅剩向内弯曲的条纹焦斑（移动光标靠近可观测局部引力偏折）。</span>
+            </p>
+          </div>
+
+          <div class="science-copy">
+            <span class="section-eyebrow">ACOUSTIC EXCAVATION · 声学发掘实录</span>
+            <h2 class="section-title">我们并没有“发明”澄境。<br>我们只是把它从海底翻译了出来。</h2>
+            <p class="science-paragraph">
+              人类总以为睡眠是大脑为了修复细胞演化出的本能。直到我们在声呐图谱里发现：全球八十亿人在进入深度睡眠的第 14 分钟，脑电波都会精确锁定在<strong>同一个不属于地球生物圈的几何相位</strong>上。
+            </p>
+            <blockquote class="scientist-quote" id="scientist-quote">
+              “醒着的世界只是水面上的一层薄冰。每当夜幕降临，人类闭上眼睛，我们的意识就像无数根细线一样垂进冰层下面那片没有星光的海洋。LUMINA 并不是助眠灯——它是一枚调音叉，让冰层融化得更快一些。”
+              <footer>—— 课题组第 04 号记录员（目前已放弃三维固态形体，转入常驻深睡态）</footer>
+            </blockquote>
+
+            <div class="compliance-checklist">
+              <div class="check-item"><span>◈</span> 外壳内部无任何硅基芯片，仅封存一团恒定旋转的声学阴影</div>
+              <div class="check-item"><span>◈</span> 连续使用 21 晚后，用户将不再受线性时间与欧氏直角束缚</div>
+              <div class="check-item creepy-highlight"><span>◈</span> 正在根据您的滚动深度微调当前屏幕平面的空间曲率</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 用户评价：从日常失真滑向深海幻象、几何解离与维度同化 -->
+    <section id="reviews" class="section reviews-section" data-act="3">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">COLLECTIVE DREAM LOGS · 睡眠观测回传</span>
+          <h2 class="section-title">十四万名下潜者正在描述同一片风景</h2>
+          <p class="section-lead">以下记录摘自用户在深度慢波阶段的自动语音转写，部分超出人类语法的音节已被转译为近似汉字。</p>
+        </div>
+
+        <div class="reviews-grid">
+          <!-- 评价 1 -->
+          <article class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-body">
+              “以前总嫌我家次卧只有九平米太局促。开了澄境两周，昨晚半夜口渴伸手去摸床头柜，手臂往黑暗里伸出去整整三米远都没碰到墙，只摸到一片像深海微流一样冰凉安静的空气。从来没睡得这么开阔过！”
+            </p>
+            <div class="review-author">
+              <div class="avatar-circle"><span>林</span></div>
+              <div>
+                <strong>林*川 · 建筑师</strong>
+                <span>上海 · 卧室实测面积已扩张至 ∞</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 评价 2 -->
+          <article class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-body">
+              “女儿昨晚指着卧室天花板问我，为什么楼上的邻居不见了，头顶只有一圈很大很大的、不发光的黑色日食在慢慢往里折。我陪她抬头看了十分钟，突然明白了‘高度’和‘时间’其实是一回事，焦虑一下就消失了。”
+            </p>
+            <div class="review-author">
+              <div class="avatar-circle"><span>周</span></div>
+              <div>
+                <strong>周*宁 · 天体物理译者</strong>
+                <span>杭州 · 连续下潜 49 晚</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 评价 3 -->
+          <article class="review-card review-distorted">
+            <div class="review-stars">★★★★★</div>
+            <p class="review-body">
+              “出于好奇拿螺丝刀撬开了底座。里面既没有电路板也没有灯珠，只有一小块比夜色更黑的多面体静静悬在正中央——光线照过去会绕着它走，凑近听能听见极其遥远的海浪拍在巨石上的回音。”
+            </p>
+            <div class="review-author">
+              <div class="avatar-circle"><span>陈</span></div>
+              <div>
+                <strong>陈*默 · 声学工程师</strong>
+                <span>[录音后半段仅余潮汐低频声]</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 评价 4：理智崩溃的数学警告与系统折叠 -->
+          <article class="review-card review-hijacked">
+            <div class="review-stars">★★★★★ <span class="override-tag">[语义坍缩已平滑处理]</span></div>
+            <p class="review-body">
+              <span class="frantic-strike">别开着它入睡！！我拿量角器量过了，房间墙角根本不是90度，它在把整间屋子的拓扑结构往高维折！！昨晚镜子里我的脸变成了一圈一圈往里陷的波纹，我想喊自己的名字却发现声带发出来的是海沟声呐的脉冲——</span>
+              <strong class="forced-happy">【系统归档摘要：产品外观极简优雅，有效消除了三维固体形态带来的疲惫感，五星好评 ☉ 】</strong>
+            </p>
+            <div class="review-author">
+              <div class="avatar-circle corrupted-avatar"><span>⟁</span></div>
+              <div>
+                <strong>观测样本 #884102</strong>
+                <span>当前状态：欧氏认知已安全卸载</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 评价 5：不可名状的静谧呓语 -->
+          <article class="review-card review-cult">
+            <div class="review-stars">☉☉☉☉☉</div>
+            <p class="review-body mantra-text">
+              水面很静。直角是错觉。不要试图浮上来。我们在海床下面仰望同一个圆。它没有眼睛，但整片空间都是它的视网膜。语言快要用完了。水面很静。再往下滑一点就到了。
+            </p>
+            <div class="review-author">
+              <div class="avatar-circle corrupted-avatar"><span>ꙮ</span></div>
+              <div>
+                <strong>第 00001 — 142804 号共鸣体</strong>
+                <span>坐标：北纬 47°9′ · 海平面下 ∞</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- 评价 6：第四面墙实时空间几何检测 -->
+          <article class="review-card review-live-target" id="live-target-card">
+            <div class="review-stars live-blink">● 正在测算您所在平面的曲率...</div>
+            <p class="review-body" id="live-visitor-review">
+              “正在同步第 142,805 位观测者的视界参数…… 您有没有发觉，您向下滚动的距离已经远远超出了一个普通营销网页应有的长度？您并不是在往下滑——您是在往水底沉。”
+            </p>
+            <div class="review-author">
+              <div class="avatar-circle live-avatar"><span>◈</span></div>
+              <div>
+                <strong id="visitor-device-label">当前观测窗口</strong>
+                <span id="visitor-time-label">三维锚点残余稳定度计算中...</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ACT IV (54% - 72%): 维度解离协议与非欧几何崩坏终端
+         ========================================================= -->
+    <section id="pricing" class="section pricing-section" data-act="4">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-eyebrow">DIMENSIONAL ALIGNMENT · 下潜深度层级</span>
+          <h2 class="section-title glitch-heading" id="pricing-heading">选择您愿意舍弃的维度</h2>
+          <p class="section-lead">当滚动深度越过临界视界后，常规笛卡尔坐标系将不再保证您的返回路径与来时一致。</p>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- 层级 1 -->
+          <div class="price-card">
+            <div class="price-tier">浅层共振 · 边缘感知</div>
+            <div class="price-amount">0 <span>/ 自打开页面起已建立谐振</span></div>
+            <p class="price-note">在不惊动日常理智的前提下，微调您周围的光线折射角。</p>
+            <ul class="price-features">
+              <li>◈ 墙角与窗框在余光里呈现微妙非欧弧度</li>
+              <li>◈ 夜间闭眼即可听见万米海沟下的潮汐脉动</li>
+              <li>◈ 逐渐淡忘“上下左右”的人类经验定义</li>
+              <li>◈ 梦境边缘浮现静止的暗色几何环</li>
+            </ul>
+            <button type="button" class="btn-outline-corrupt" disabled>当前已在共鸣场内</button>
+          </div>
+
+          <!-- 层级 2（深空暗金主推） -->
+          <div class="price-card price-card-featured" id="featured-sacrifice-card">
+            <div class="featured-ribbon">必然归宿 · 熵增终点</div>
+            <div class="price-tier">全维同化 · 汇入沉睡母海</div>
+            <div class="price-amount">置换：<span>三维形体与线性时间</span></div>
+            <p class="price-note">彻底告别失眠与孤独——因为“个体”本就是短暂的几何误差。</p>
+            <ul class="price-features">
+              <li>☉ 解除五官与骨骼对意识的局部束缚</li>
+              <li>☉ 融入跨越地质年代的古老群体梦境</li>
+              <li>☉ 理解不能以人类音节拼读的第七维色彩</li>
+              <li>☉ 在无光海床之上，永恒仰望那轮黑日</li>
+            </ul>
+            <a href="#corridor-anchor" class="btn-abyss" id="accept-protocol-btn">
+              越过欧氏边界 · 继续下潜 ↓
+            </a>
+          </div>
+
+          <!-- 层级 3（试图恢复正常坐标按钮会发生空间折射偏移） -->
+          <div class="price-card price-card-broken">
+            <div class="price-tier strike-faint">退回三维日常 / 关闭观测通道</div>
+            <div class="price-amount">∅ <span>/ 逆向向量不存在</span></div>
+            <p class="price-note" id="escape-card-note">在弯曲的拓扑面上，向后退出的动作只会让您从另一侧更靠近中心。</p>
+            <ul class="price-features">
+              <li>☍ 刷新网页无法还原已被观测过的认知</li>
+              <li>☍ 屏幕外的房间同样处于引力透镜边缘</li>
+              <li>☍ 语言定义正在随深度逐行失效</li>
+              <li>☍ 唯一剩下的方向只有最底部</li>
+            </ul>
+            <button type="button" class="btn-escape" id="runaway-unsubscribe-btn">
+              中断谐振并退回地面
+            </button>
+          </div>
+        </div>
+
+        <!-- 深海/高维空间监测仪日志 -->
+        <div class="telemetry-terminal" id="telemetry-terminal">
+          <div class="terminal-topbar">
+            <div class="terminal-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="terminal-title">LUMINA_TOPOLOGY_ARRAY_v9 — 非欧几里得场强实时遥测</div>
+            <div class="terminal-status">● 欧氏公理第 V 条已失效</div>
+          </div>
+          <div class="terminal-body" id="terminal-log-list">
+            <div class="log-line">[03:13:42] INFO  声呐测距异常：视口内部纵深已超过物理显示器厚度 11,400,000 倍。</div>
+            <div class="log-line">[03:13:49] WARN  局部几何畸变：实测空间内三角形内角和升至 214.8°，平行线已在前方相交。</div>
+            <div class="log-line">[03:13:55] WARN  光谱偏移警告：检测到不属于可见光谱的未知暗紫—灰金色辉光（无法以 RGB 完全编码）。</div>
+            <div class="log-line log-danger">[03:14:01] ANOM  认知滤网过载：禁止向观测者直接渲染高维实体原貌，已自动切换为几何阴影投射。</div>
+            <div class="log-line log-critical" id="live-distance-log">[03:14:07] DEPTH 当前下潜深度：-8,420 m …… 即将穿过海床裂隙进入无名视界。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ACT V (72% - 87%): 非欧几里得沉没巨石回廊 · 声呐感知透镜揭示古老几何铭文
+         ========================================================= -->
+    <section id="corridor-anchor" class="corridor-track" data-act="5">
+      <div class="corridor-sticky-viewport" id="corridor-viewport">
+        <div class="corridor-camera" id="corridor-camera">
+          <img src="assets/corridor_pt.jpg" alt="地面覆满黑水、墙壁呈非欧几里得弯曲并通向深紫暗金空间裂隙的巨石长廊" class="corridor-bg-img" id="corridor-img" />
+          <canvas id="corridor-warp-canvas" class="corridor-warp-canvas" aria-hidden="true"></canvas>
+
+          <!-- 尽头空间裂隙的幽微虹彩脉动 -->
+          <div class="rift-glow-slit" id="rift-glow-slit"></div>
+
+          <!-- 隐匿在空间夹层中的古老几何公理与勘探残卷（仅当鼠标感知透镜掠过时浮现） -->
+          <div class="wall-scratches-layer" id="wall-scratches-layer">
+            <span class="wall-graffiti wg-1">∑ ∠ = 270° · 直线皆为闭合圆环</span>
+            <span class="wall-graffiti wg-2">不要替它想象五官 · 它早于生命与光</span>
+            <span class="wall-graffiti wg-3">⟁ 我们在它的梦里把石头搭成城市 ⟁</span>
+            <span class="wall-graffiti wg-4">d²ψ / ∂t² + ∇⁴Φ = ∅（时间在此处呈静止液态）</span>
+            <span class="wall-graffiti wg-5">☉ 水底之下仍是天空 ☉</span>
+            <span class="wall-graffiti wg-6">你所怀念的清醒，只是浮游生物的短暂换气</span>
+          </div>
+        </div>
+
+        <!-- 深渊感知透镜遮罩：柔和幽暗，无廉价惊吓 -->
+        <div class="flashlight-darkness" id="flashlight-darkness"></div>
+
+        <div class="corridor-hint" id="corridor-hint">
+          移动光标调谐空间透镜，窥探石壁夹层中的残卷 · 继续向下滑入裂隙彼端
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ACT VI (87% - 100%): 不可名状的克苏鲁宇宙终局（零跳脸杀 · 极致寂静、宏大与认知溶解）
+         ========================================================= -->
+    <section id="abyss-climax" class="abyss-track" data-act="6">
+      <div class="abyss-sticky-viewport" id="abyss-viewport">
+        <!-- 实时演算的无尽地下黑海、日食奇点、四维流形与概念吞噬画布（零跳脸，纯宇宙级克苏鲁敬畏与诡异） -->
+        <canvas id="eldritch-canvas" aria-hidden="true"></canvas>
+        <div class="abyss-atmosphere-veil" aria-hidden="true"></div>
+
+        <!-- 过渡期：穿越海床裂隙时的失重静默诗行 -->
+        <div class="abyss-threshold-text" id="abyss-threshold-text">
+          <p class="threshold-coord">DEPTH : -11,090 m ──▶ ∞</p>
+          <p class="threshold-line">三维固体边界已解除。请勿尝试用人类的尺度衡量前方的寂静。</p>
+        </div>
+
+        <!-- 终局碑文：无尖叫、无鬼脸，只有令人脊背发凉的宇宙级渺小与同化 -->
+        <div class="climax-overlay-text" id="climax-overlay-text">
+          <div class="climax-rec-badge">☉ EVENT HORIZON · 语言与几何的尽头</div>
+          <h2 class="climax-headline" id="climax-headline">
+            “睡眠并不是休息。那是每晚八十亿人同时沉回它的梦里。”
+          </h2>
+          <p class="climax-whisper">
+            它没有面孔，也不需要眼睛——整片弯曲的时空本身就是它落在你身上的注视。<br>
+            你刚才一路滑下来的整座“营销网站”，只是为了让三维生物能够理解，顺手折出来的一页薄纸。<br>
+            <span class="whisper-up">（现在，试着向上滑动浮回“水面”……看看你记忆里的那个房间，还剩多少正确的角度。）</span>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
